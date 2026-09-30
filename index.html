@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tâche 2 - Construire un tableau à double entrée</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#eef7ff,#f4fff7);
+  color:#18324a;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.header{
+  background:linear-gradient(135deg,#087f8c,#1261a0);
+  color:white;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.header h1{
+  margin:10px 0;
+  font-size:28px;
+}
+
+.badge{
+  display:inline-block;
+  background:white;
+  color:#1261a0;
+  padding:7px 15px;
+  border-radius:20px;
+  font-weight:bold;
+}
+
+.info{
+  margin:15px 0;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.box{
+  background:white;
+  padding:12px 18px;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  font-weight:bold;
+}
+
+.section{
+  background:white;
+  margin:20px 0;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.section h2{
+  color:#1261a0;
+  margin-top:0;
+}
+
+.choice{
+  display:block;
+  width:100%;
+  padding:14px;
+  margin:9px 0;
+  border:2px solid #d8e2ea;
+  background:#f7fafc;
+  border-radius:12px;
+  cursor:pointer;
+  text-align:left;
+  font-size:16px;
+}
+
+.choice:hover{
+  background:#eaf4f8;
+}
+
+.correct{
+  background:#dff5e5 !important;
+  border-color:#38a169 !important;
+}
+
+.wrong{
+  background:#ffe1e1 !important;
+  border-color:#d64545 !important;
+}
+
+.feedback{
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  font-weight:bold;
+  min-height:20px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  background:white;
+}
+
+th,td{
+  border:1px solid #b9c8d2;
+  padding:12px;
+  text-align:center;
+}
+
+th{
+  background:#e8f2f7;
+  color:#1261a0;
+}
+
+input,select{
+  padding:10px;
+  border:2px solid #ccd9e1;
+  border-radius:8px;
+  font-size:16px;
+}
+
+input{
+  width:90px;
+  text-align:center;
+}
+
+select{
+  width:100%;
+  margin-top:5px;
+}
+
+button{
+  border:none;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn{
+  background:#1261a0;
+  color:white;
+}
+
+.btn-green{
+  background:#087f8c;
+  color:white;
+}
+
+.btn-orange{
+  background:#e59b00;
+  color:white;
+}
+
+.result{
+  display:none;
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  text-align:center;
+  margin-top:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+.big-score{
+  font-size:42px;
+  color:#1261a0;
+  font-weight:bold;
+}
+
+.footer{
+  text-align:center;
+  margin:25px;
+  color:#607080;
+}
+
+@media(max-width:600px){
+
+  .container{
+    padding:10px;
+  }
+
+  .header h1{
+    font-size:22px;
+  }
+
+  .section{
+    padding:15px;
+  }
+
+  table{
+    font-size:14px;
+  }
+
+  th,td{
+    padding:8px;
+  }
+
+  button{
+    width:100%;
+    margin-top:8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<span class="badge">SVT — 3AC</span>
+
+<h1>📊 Tâche 2 : Construire un tableau à double entrée</h1>
+
+<p><strong>Académie Nebras</strong></p>
+
+<p>Avec Prof Hanane IZAHRAOUI</p>
+
+<p>🎯 Organiser et présenter des données scientifiques</p>
+
+</div>
+
+
+<!-- INFORMATIONS -->
+
+<div class="info">
+
+<div class="box">
+📌 Tâche 2
+</div>
+
+<div class="box">
+⭐ Score : <span id="score">0</span>/4
+</div>
+
+</div>
+
+
+<!-- SITUATION -->
+
+<div class="section">
+
+<h2>🔎 Situation-problème</h2>
+
+<p>
+On dispose des informations suivantes concernant la composition
+de trois aliments :
+</p>
+
+<table>
+
+<tr>
+<th>Aliment</th>
+<th>Glucides (g)</th>
+<th>Protéines (g)</th>
+<th>Lipides (g)</th>
+</tr>
+
+<tr>
+<td>Pain</td>
+<td>50</td>
+<td>9</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>Lait</td>
+<td>5</td>
+<td>3</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>Œuf</td>
+<td>1</td>
+<td>13</td>
+<td>11</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- ETAPE 1 -->
+
+<div class="section">
+
+<h2>🟦 Étape 1 — Identifier les deux dimensions</h2>
+
+<p>
+Que doit-on placer dans les lignes et dans les colonnes ?
+</p>
+
+<button class="choice" data-question="q1" data-correct="true">
+Lignes : aliments — Colonnes : constituants
+</button>
+
+<button class="choice" data-question="q1" data-correct="false">
+Lignes : constituants — Colonnes : aliments uniquement
+</button>
+
+<div id="feedback1" class="feedback"></div>
+
+</div>
+
+
+<!-- ETAPE 2 -->
+
+<div class="section">
+
+<h2>🟦 Étape 2 — Choisir le titre</h2>
+
+<p>
+Quel titre décrit correctement le tableau ?
+</p>
+
+<button class="choice" data-question="q2" data-correct="false">
+Les aliments préférés des élèves
+</button>
+
+<button class="choice" data-question="q2" data-correct="true">
+Composition de quelques aliments en glucides, protéines et lipides
+</button>
+
+<button class="choice" data-question="q2" data-correct="false">
+La digestion dans l'intestin
+</button>
+
+<div id="feedback2" class="feedback"></div>
+
+</div>
+
+
+<!-- ETAPE 3 -->
+
+<div class="section">
+
+<h2>🟦 Étape 3 — Construire les en-têtes</h2>
+
+<p>
+Complète les deux en-têtes manquants.
+</p>
+
+<table>
+
+<tr>
+
+<th>
+<select id="head1">
+
+<option value="">Choisir...</option>
+
+<option value="aliment">
+Aliment
+</option>
+
+<option value="energie">
+Énergie
+</option>
+
+</select>
+</th>
+
+<th>
+Glucides (g)
+</th>
+
+<th>
+<select id="head2">
+
+<option value="">Choisir...</option>
+
+<option value="proteines">
+Protéines (g)
+</option>
+
+<option value="vitamines">
+Vitamines
+</option>
+
+</select>
+</th>
+
+<th>
+Lipides (g)
+</th>
+
+</tr>
+
+<tr>
+<td>Pain</td>
+<td>50</td>
+<td>9</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>Lait</td>
+<td>5</td>
+<td>3</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>Œuf</td>
+<td>1</td>
+<td>13</td>
+<td>11</td>
+</tr>
+
+</table>
+
+<br>
+
+<button class="btn" onclick="checkHeaders()">
+✅ Vérifier
+</button>
+
+<div id="feedback3" class="feedback"></div>
+
+</div>
+
+
+<!-- ETAPE 4 -->
+
+<div class="section">
+
+<h2>🟦 Étape 4 — Compléter le tableau</h2>
+
+<p>
+Complète les valeurs manquantes à partir des données de départ.
+</p>
+
+<table>
+
+<tr>
+
+<th>Aliment</th>
+
+<th>Glucides (g)</th>
+
+<th>Protéines (g)</th>
+
+<th>Lipides (g)</th>
+
+</tr>
+
+<tr>
+
+<td>Pain</td>
+
+<td>
+<input id="v1" type="number">
+</td>
+
+<td>9</td>
+
+<td>2</td>
+
+</tr>
+
+<tr>
+
+<td>Lait</td>
+
+<td>5</td>
+
+<td>
+<input id="v2" type="number">
+</td>
+
+<td>4</td>
+
+</tr>
+
+<tr>
+
+<td>Œuf</td>
+
+<td>1</td>
+
+<td>13</td>
+
+<td>
+<input id="v3" type="number">
+</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<button class="btn" onclick="checkTable()">
+✅ Vérifier le tableau
+</button>
+
+<div id="feedback4" class="feedback"></div>
+
+</div>
+
+
+<!-- RESULTAT -->
+
+<div class="section">
+
+<button class="btn" onclick="showResult()">
+🏆 Voir mon résultat
+</button>
+
+<button class="btn-green" onclick="restart()">
+🔄 Recommencer
+</button>
+
+</div>
+
+
+<div id="result" class="result">
+
+<h2>🎉 Ton résultat</h2>
+
+<div class="big-score">
+<span id="finalScore">0</span>/4
+</div>
+
+<p id="message"></p>
+
+</div>
+
+
+<div class="footer">
+
+<strong>Académie Nebras</strong><br>
+
+SVT — 3AC<br>
+
+Prof Hanane IZAHRAOUI
+
+</div>
+
+</div>
+
+
+<script>
+
+let score = 0;
+
+let done1 = false;
+let done2 = false;
+let done3 = false;
+let done4 = false;
+
+
+/* ETAPES 1 ET 2 */
+
+document.querySelectorAll(".choice").forEach(function(button){
+
+button.addEventListener("click",function(){
+
+let question = button.dataset.question;
+
+let correct = button.dataset.correct === "true";
+
+let feedback;
+
+if(question === "q1"){
+feedback = document.getElementById("feedback1");
+
+if(done1) return;
+
+}else{
+feedback = document.getElementById("feedback2");
+
+if(done2) return;
+}
+
+
+document
+.querySelectorAll('[data-question="'+question+'"]')
+.forEach(function(b){
+
+b.classList.remove("correct","wrong");
+
+});
+
+
+if(correct){
+
+button.classList.add("correct");
+
+feedback.textContent =
+"✅ Correct ! Très bon choix.";
+
+feedback.style.background="#dff5e5";
+feedback.style.color="#27633a";
+
+if(question === "q1"){
+done1=true;
+}else{
+done2=true;
+}
+
+score++;
+
+document.getElementById("score").textContent=score;
+
+}else{
+
+button.classList.add("wrong");
+
+feedback.textContent =
+"❌ Ce n'est pas le meilleur choix. Observe les deux dimensions des données.";
+
+feedback.style.background="#ffe1e1";
+feedback.style.color="#8a3838";
+
+}
+
+});
+
+});
+
+
+/* ETAPE 3 */
+
+function checkHeaders(){
+
+if(done3) return;
+
+let head1 =
+document.getElementById("head1").value;
+
+let head2 =
+document.getElementById("head2").value;
+
+let feedback =
+document.getElementById("feedback3");
+
+
+if(head1 === "aliment" &&
+   head2 === "proteines"){
+
+done3=true;
+
+score++;
+
+document.getElementById("score").textContent=score;
+
+feedback.textContent =
+"✅ Excellent ! Les en-têtes sont correctement construits.";
+
+feedback.style.background="#dff5e5";
+feedback.style.color="#27633a";
+
+}else{
+
+feedback.textContent =
+"❌ Vérifie : la première colonne indique l'aliment et la troisième colonne indique les protéines.";
+
+feedback.style.background="#ffe1e1";
+feedback.style.color="#8a3838";
+
+}
+
+}
+
+
+/* ETAPE 4 */
+
+function checkTable(){
+
+if(done4) return;
+
+let v1 =
+document.getElementById("v1").value;
+
+let v2 =
+document.getElementById("v2").value;
+
+let v3 =
+document.getElementById("v3").value;
+
+let feedback =
+document.getElementById("feedback4");
+
+
+if(v1 === "50" &&
+   v2 === "3" &&
+   v3 === "11"){
+
+done4=true;
+
+score++;
+
+document.getElementById("score").textContent=score;
+
+feedback.textContent =
+"✅ Parfait ! Le tableau est correctement complété.";
+
+feedback.style.background="#dff5e5";
+feedback.style.color="#27633a";
+
+}else{
+
+feedback.textContent =
+"❌ Vérifie les données : Pain = 50 g, Lait = 3 g, Œuf = 11 g.";
+
+feedback.style.background="#ffe1e1";
+feedback.style.color="#8a3838";
+
+}
+
+}
+
+
+/* RESULTAT
