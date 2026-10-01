@@ -1,34 +1,40 @@
-/* RESULTAT */
+/* =========================
+   RESULTAT
+========================= */
 
-function showResult(){
+function showResult() {
 
     const result = document.getElementById("result");
     const finalScore = document.getElementById("finalScore");
     const message = document.getElementById("message");
 
-    finalScore.textContent = score;
+    if (!result || !finalScore || !message) {
+        return;
+    }
 
-    if(score === 4){
+    finalScore.textContent = score + " / 4";
+
+    if (score === 4) {
 
         message.textContent =
         "🌟 Excellent ! Tu maîtrises très bien la construction d’un tableau à double entrée.";
 
-    }else if(score === 3){
+    } else if (score === 3) {
 
         message.textContent =
         "👏 Très bien ! Il reste seulement un point à revoir.";
 
-    }else if(score === 2){
+    } else if (score === 2) {
 
         message.textContent =
         "👍 Bon travail ! Revois les étapes puis recommence.";
 
-    }else if(score === 1){
+    } else if (score === 1) {
 
         message.textContent =
         "📚 Continue tes efforts et reprends la méthode étape par étape.";
 
-    }else{
+    } else {
 
         message.textContent =
         "💪 Courage ! Relis les étapes puis recommence l’activité.";
@@ -43,47 +49,87 @@ function showResult(){
 }
 
 
-/* RECOMMENCER */
+/* =========================
+   RECOMMENCER
+========================= */
 
-function restart(){
+function restart() {
 
     score = 0;
 
+    /* Réinitialiser les questions */
     done1 = false;
     done2 = false;
     done3 = false;
     done4 = false;
 
-    document.getElementById("score").textContent = "0";
+    /* Score */
+    const scoreElement = document.getElementById("score");
 
-    document.getElementById("finalScore").textContent = "0";
+    if (scoreElement) {
+        scoreElement.textContent = "0";
+    }
 
-    document.getElementById("message").textContent = "";
+    const finalScore = document.getElementById("finalScore");
 
-    document.getElementById("result").style.display = "none";
+    if (finalScore) {
+        finalScore.textContent = "0 / 4";
+    }
 
+    /* Message */
+    const message = document.getElementById("message");
 
-    document.getElementById("feedback1").textContent = "";
-    document.getElementById("feedback2").textContent = "";
-    document.getElementById("feedback3").textContent = "";
-    document.getElementById("feedback4").textContent = "";
+    if (message) {
+        message.textContent = "";
+    }
 
+    /* Résultat */
+    const result = document.getElementById("result");
 
-    document.getElementById("head1").value = "";
-    document.getElementById("head2").value = "";
+    if (result) {
+        result.style.display = "none";
+    }
 
-    document.getElementById("v1").value = "";
-    document.getElementById("v2").value = "";
-    document.getElementById("v3").value = "";
+    /* Feedback */
+    for (let i = 1; i <= 4; i++) {
 
+        const feedback =
+            document.getElementById("feedback" + i);
 
-    document.querySelectorAll(".choice").forEach(function(button){
+        if (feedback) {
+            feedback.textContent = "";
+        }
+    }
 
-        button.classList.remove("correct","wrong");
+    /* Champs de réponse */
+    const fields = [
+        "head1",
+        "head2",
+        "v1",
+        "v2",
+        "v3"
+    ];
 
+    fields.forEach(function(id) {
+
+        const field = document.getElementById(id);
+
+        if (field) {
+            field.value = "";
+            field.disabled = false;
+        }
     });
 
+    /* Réinitialiser les boutons */
+    document.querySelectorAll(".choice").forEach(function(button) {
 
+        button.classList.remove("correct");
+        button.classList.remove("wrong");
+
+        button.disabled = false;
+    });
+
+    /* Retour en haut */
     window.scrollTo({
         top: 0,
         behavior: "smooth"
