@@ -1,137 +1,316 @@
-/* =========================
-   RESULTAT
-========================= */
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-function showResult() {
+<title>Construire un tableau à double entrée - SVT 3AC</title>
 
-    const result = document.getElementById("result");
-    const finalScore = document.getElementById("finalScore");
-    const message = document.getElementById("message");
-
-    if (!result || !finalScore || !message) {
-        return;
-    }
-
-    finalScore.textContent = score + " / 4";
-
-    if (score === 4) {
-
-        message.textContent =
-        "🌟 Excellent ! Tu maîtrises très bien la construction d’un tableau à double entrée.";
-
-    } else if (score === 3) {
-
-        message.textContent =
-        "👏 Très bien ! Il reste seulement un point à revoir.";
-
-    } else if (score === 2) {
-
-        message.textContent =
-        "👍 Bon travail ! Revois les étapes puis recommence.";
-
-    } else if (score === 1) {
-
-        message.textContent =
-        "📚 Continue tes efforts et reprends la méthode étape par étape.";
-
-    } else {
-
-        message.textContent =
-        "💪 Courage ! Relis les étapes puis recommence l’activité.";
-    }
-
-    result.style.display = "block";
-
-    result.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+<style>
+* {
+    box-sizing: border-box;
 }
 
-
-/* =========================
-   RECOMMENCER
-========================= */
-
-function restart() {
-
-    score = 0;
-
-    /* Réinitialiser les questions */
-    done1 = false;
-    done2 = false;
-    done3 = false;
-    done4 = false;
-
-    /* Score */
-    const scoreElement = document.getElementById("score");
-
-    if (scoreElement) {
-        scoreElement.textContent = "0";
-    }
-
-    const finalScore = document.getElementById("finalScore");
-
-    if (finalScore) {
-        finalScore.textContent = "0 / 4";
-    }
-
-    /* Message */
-    const message = document.getElementById("message");
-
-    if (message) {
-        message.textContent = "";
-    }
-
-    /* Résultat */
-    const result = document.getElementById("result");
-
-    if (result) {
-        result.style.display = "none";
-    }
-
-    /* Feedback */
-    for (let i = 1; i <= 4; i++) {
-
-        const feedback =
-            document.getElementById("feedback" + i);
-
-        if (feedback) {
-            feedback.textContent = "";
-        }
-    }
-
-    /* Champs de réponse */
-    const fields = [
-        "head1",
-        "head2",
-        "v1",
-        "v2",
-        "v3"
-    ];
-
-    fields.forEach(function(id) {
-
-        const field = document.getElementById(id);
-
-        if (field) {
-            field.value = "";
-            field.disabled = false;
-        }
-    });
-
-    /* Réinitialiser les boutons */
-    document.querySelectorAll(".choice").forEach(function(button) {
-
-        button.classList.remove("correct");
-        button.classList.remove("wrong");
-
-        button.disabled = false;
-    });
-
-    /* Retour en haut */
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+body {
+    margin: 0;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+    color: #263238;
 }
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+}
+
+h1 {
+    text-align: center;
+    color: #1565c0;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #388e3c;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.step {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f7fbff;
+    border-left: 6px solid #1565c0;
+    border-radius: 15px;
+}
+
+.step h2 {
+    color: #1565c0;
+    margin-top: 0;
+}
+
+.question {
+    margin-top: 18px;
+    padding: 18px;
+    background: #fff8e1;
+    border-radius: 14px;
+}
+
+.question-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.choice {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 13px;
+    border: 2px solid #90a4ae;
+    border-radius: 10px;
+    background: white;
+    color: #263238;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.choice:hover {
+    background: #e3f2fd;
+}
+
+.choice.correct {
+    background: #c8e6c9;
+    border-color: #2e7d32;
+    color: #1b5e20;
+}
+
+.choice.wrong {
+    background: #ffcdd2;
+    border-color: #c62828;
+    color: #b71c1c;
+}
+
+.choice:disabled {
+    cursor: default;
+}
+
+.feedback {
+    min-height: 25px;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    border: 2px solid #90a4ae;
+    border-radius: 9px;
+    font-size: 16px;
+    margin: 6px 0;
+}
+
+.action {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1565c0;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.action:hover {
+    background: #0d47a1;
+}
+
+.action.green {
+    background: #2e7d32;
+}
+
+.action.green:hover {
+    background: #1b5e20;
+}
+
+.action.gray {
+    background: #616161;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+}
+
+th, td {
+    border: 2px solid #78909c;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: #bbdefb;
+}
+
+td {
+    background: white;
+}
+
+.score-box {
+    margin-top: 25px;
+    padding: 20px;
+    text-align: center;
+    background: #e8f5e9;
+    border-radius: 15px;
+}
+
+#score {
+    font-size: 25px;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+.result {
+    display: none;
+    margin-top: 20px;
+    padding: 25px;
+    text-align: center;
+    background: white;
+    border: 3px solid #1565c0;
+    border-radius: 15px;
+}
+
+#finalScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1565c0;
+    margin: 15px;
+}
+
+#message {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.reminder {
+    padding: 18px;
+    background: #e3f2fd;
+    border-radius: 15px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .step {
+        padding: 15px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .choice {
+        font-size: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Construire un tableau à double entrée</h1>
+
+<div class="subtitle">
+SVT – 3AC | Prof Hanane
+</div>
+
+
+<!-- =========================
+     ÉTAPE 1
+========================= -->
+
+<div class="step">
+
+<h2>1️⃣ Déterminer les éléments à comparer</h2>
+
+<p>
+Avant de construire le tableau, je dois identifier
+<strong>les éléments à comparer</strong>.
+</p>
+
+<div class="question">
+
+<div class="question-title">
+Question 1 : Quels éléments doit-on identifier en premier ?
+</div>
+
+<button class="choice" data-question="1" data-correct="true">
+Les éléments à comparer
+</button>
+
+<button class="choice" data-question="1" data-correct="false">
+La couleur du tableau
+</button>
+
+<button class="choice" data-question="1" data-correct="false">
+La taille de la feuille
+</button>
+
+<div id="feedback1" class="feedback"></div>
+
+</div>
+</div>
+
+
+<!-- =========================
+     ÉTAPE 2
+========================= -->
+
+<div class="step">
+
+<h2>2️⃣ Déterminer les lignes et les colonnes</h2>
+
+<p>
+Je détermine ensuite le nombre de
+<strong>lignes</strong> et de <strong>colonnes</strong>
+nécessaires.
+</p>
+
+<div class="question">
+
+<div class="question-title">
+Question 2 : Que faut-il déterminer pour organiser le tableau ?
+</div>
+
+<button class="choice" data-question="2" data-correct="true">
+Le nombre de lignes et de colonnes
+</button>
+
+<button class="
