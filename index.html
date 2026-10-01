@@ -313,4 +313,472 @@ Question 2 : Que faut-il déterminer pour organiser le tableau ?
 Le nombre de lignes et de colonnes
 </button>
 
-<button class="
+<button class="choice" data-question="2" data-correct="false">
+Uniquement la couleur du tableau
+</button>
+
+<button class="choice" data-question="2" data-correct="false">
+Uniquement la largeur de la feuille
+</button>
+
+<div id="feedback2" class="feedback"></div>
+
+</div>
+</div>
+
+
+<!-- =========================
+     ÉTAPE 3
+========================= -->
+
+<div class="step">
+
+<h2>3️⃣ Tracer et remplir le tableau</h2>
+
+<p>
+Je trace les lignes et les colonnes puis je place
+chaque donnée dans la case correspondante.
+</p>
+
+<table>
+
+<tr>
+<th>Aliment</th>
+<th>Glucides (g)</th>
+<th>Protéines (g)</th>
+</tr>
+
+<tr>
+<td>Pain</td>
+<td>50</td>
+<td>8</td>
+</tr>
+
+<tr>
+<td>Lait</td>
+<td>5</td>
+<td>3</td>
+</tr>
+
+</table>
+
+<div class="question">
+
+<div class="question-title">
+Question 3 : Combien de grammes de glucides contient le pain ?
+</div>
+
+<input
+type="number"
+id="answer3"
+placeholder="Écris ta réponse"
+>
+
+<br>
+
+<button class="action" id="check3">
+Vérifier
+</button>
+
+<div id="feedback3" class="feedback"></div>
+
+</div>
+</div>
+
+
+<!-- =========================
+     ÉTAPE 4
+========================= -->
+
+<div class="step">
+
+<h2>4️⃣ Donner un titre au tableau</h2>
+
+<p>
+Un tableau doit avoir un titre clair qui indique
+<strong>ce que présentent les données</strong>.
+</p>
+
+<div class="question">
+
+<div class="question-title">
+Question 4 : Quel titre convient à ce tableau ?
+</div>
+
+<button class="choice" data-question="4" data-correct="true">
+Composition de quelques aliments en glucides et protéines
+</button>
+
+<button class="choice" data-question="4" data-correct="false">
+Les aliments
+</button>
+
+<button class="choice" data-question="4" data-correct="false">
+Tableau
+</button>
+
+<div id="feedback4" class="feedback"></div>
+
+</div>
+</div>
+
+
+<!-- =========================
+     RAPPEL
+========================= -->
+
+<div class="reminder">
+
+📌 <strong>À retenir :</strong><br><br>
+
+1️⃣ Déterminer les éléments à comparer<br>
+⬇️<br>
+2️⃣ Déterminer les lignes et les colonnes<br>
+⬇️<br>
+3️⃣ Tracer et remplir le tableau<br>
+⬇️<br>
+4️⃣ Donner un titre au tableau
+
+</div>
+
+
+<!-- =========================
+     SCORE
+========================= -->
+
+<div class="score-box">
+
+<div id="score">
+Score : 0 / 4
+</div>
+
+<button
+class="action green"
+id="resultButton"
+>
+🎯 Voir le résultat
+</button>
+
+<div id="result" class="result">
+
+<h2>📊 Résultat de l'activité</h2>
+
+<div id="finalScore">
+0 / 4
+</div>
+
+<div id="message"></div>
+
+<button
+class="action gray"
+id="restartButton"
+>
+🔄 Recommencer l'activité
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let score = 0;
+
+const completed = {
+    1: false,
+    2: false,
+    3: false,
+    4: false
+};
+
+
+/* ==========================================
+   ACTUALISER LE SCORE
+========================================== */
+
+function updateScore() {
+
+    document.getElementById("score").textContent =
+        "Score : " + score + " / 4";
+}
+
+
+/* ==========================================
+   QUESTIONS 1, 2 ET 4
+========================================== */
+
+document.querySelectorAll(".choice").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const question =
+            Number(button.dataset.question);
+
+        const correct =
+            button.dataset.correct === "true";
+
+        if (completed[question]) {
+            return;
+        }
+
+        const feedback =
+            document.getElementById("feedback" + question);
+
+        const buttons =
+            document.querySelectorAll(
+                '.choice[data-question="' + question + '"]'
+            );
+
+
+        if (correct) {
+
+            completed[question] = true;
+
+            score++;
+
+            button.classList.add("correct");
+
+            feedback.textContent =
+                "✅ Bonne réponse !";
+
+            feedback.style.color = "#2e7d32";
+
+            buttons.forEach(function(b) {
+                b.disabled = true;
+            });
+
+            updateScore();
+
+        } else {
+
+            button.classList.add("wrong");
+
+            feedback.textContent =
+                "❌ Ce n'est pas la bonne réponse. Essaie encore.";
+
+            feedback.style.color = "#c62828";
+
+            setTimeout(function() {
+                button.classList.remove("wrong");
+            }, 800);
+        }
+
+    });
+
+});
+
+
+/* ==========================================
+   QUESTION 3
+========================================== */
+
+document.getElementById("check3").addEventListener(
+    "click",
+    function() {
+
+        if (completed[3]) {
+            return;
+        }
+
+        const input =
+            document.getElementById("answer3");
+
+        const feedback =
+            document.getElementById("feedback3");
+
+        const value =
+            Number(input.value);
+
+
+        if (input.value.trim() === "") {
+
+            feedback.textContent =
+                "⚠️ Écris une réponse.";
+
+            feedback.style.color = "#ef6c00";
+
+            return;
+        }
+
+
+        if (value === 50) {
+
+            completed[3] = true;
+
+            score++;
+
+            feedback.textContent =
+                "✅ Correct ! Le pain contient 50 g de glucides.";
+
+            feedback.style.color = "#2e7d32";
+
+            input.disabled = true;
+
+            document.getElementById("check3").disabled = true;
+
+            updateScore();
+
+        } else {
+
+            feedback.textContent =
+                "❌ Essaie encore. Lis la ligne « Pain » et la colonne « Glucides (g) ».";
+
+            feedback.style.color = "#c62828";
+        }
+
+    }
+);
+
+
+/* ==========================================
+   VOIR LE RÉSULTAT
+========================================== */
+
+document.getElementById("resultButton").addEventListener(
+    "click",
+    function() {
+
+        const result =
+            document.getElementById("result");
+
+        const finalScore =
+            document.getElementById("finalScore");
+
+        const message =
+            document.getElementById("message");
+
+
+        finalScore.textContent =
+            score + " / 4";
+
+
+        if (score === 4) {
+
+            message.textContent =
+                "🌟 Excellent ! Tu maîtrises très bien la construction d’un tableau à double entrée.";
+
+        } else if (score === 3) {
+
+            message.textContent =
+                "👏 Très bien ! Il reste seulement un point à revoir.";
+
+        } else if (score === 2) {
+
+            message.textContent =
+                "👍 Bon travail ! Revois les étapes puis recommence.";
+
+        } else if (score === 1) {
+
+            message.textContent =
+                "📚 Continue tes efforts et reprends la méthode étape par étape.";
+
+        } else {
+
+            message.textContent =
+                "💪 Courage ! Relis les étapes puis recommence l’activité.";
+        }
+
+
+        result.style.display = "block";
+
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+);
+
+
+/* ==========================================
+   RECOMMENCER
+========================================== */
+
+document.getElementById("restartButton").addEventListener(
+    "click",
+    function() {
+
+        score = 0;
+
+        completed[1] = false;
+        completed[2] = false;
+        completed[3] = false;
+        completed[4] = false;
+
+
+        updateScore();
+
+
+        /* Réinitialiser les boutons */
+
+        document.querySelectorAll(".choice").forEach(
+            function(button) {
+
+                button.disabled = false;
+
+                button.classList.remove("correct");
+                button.classList.remove("wrong");
+
+            }
+        );
+
+
+        /* Réinitialiser les feedbacks */
+
+        for (let i = 1; i <= 4; i++) {
+
+            const feedback =
+                document.getElementById("feedback" + i);
+
+            if (feedback) {
+                feedback.textContent = "";
+            }
+        }
+
+
+        /* Réinitialiser la réponse numérique */
+
+        const input =
+            document.getElementById("answer3");
+
+        input.value = "";
+        input.disabled = false;
+
+
+        document.getElementById("check3").disabled =
+            false;
+
+
+        /* Masquer le résultat */
+
+        document.getElementById("result").style.display =
+            "none";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* ==========================================
+   INITIALISATION
+========================================== */
+
+updateScore();
+
+</script>
+
+</body>
+</html>
